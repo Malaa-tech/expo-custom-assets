@@ -1,0 +1,4 @@
+{
+  "name": "expo-custom-assets",
+  "platforms": ["ios", "android"]
+}

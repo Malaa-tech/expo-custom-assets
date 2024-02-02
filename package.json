@@ -1,0 +1,37 @@
+{
+  "name": "expo-custom-assets",
+  "version": "1.0.0",
+  "description": "Expo plugin to add custom assets to native codebase",
+  "main": "build/index.js",
+  "types": "build/index.d.ts",
+  "sideEffects": false,
+  "homepage": "https://github.com/malaa-tech/expo-custom-assets/expo-custom-assets",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/malaa-tech/expo-custom-assets/expo-custom-assets.git"
+  },
+  "files": [
+    "./build",
+    "app.plugin.js"
+  ],
+  "scripts": {
+    "build": "expo-module build",
+    "clean": "expo-module clean",
+    "lint": "expo-module lint",
+    "test": "expo-module test",
+    "expo-module": "expo-module"
+  },
+  "keywords": [
+    "react",
+    "expo",
+    "config-plugins",
+    "prebuild"
+  ],
+  "peerDependencies": {
+    "expo": "^49"
+  },
+  "devDependencies": {
+    "expo-module-scripts": "^3.4.0",
+    "fs-extra": "^11.2.0"
+  }
+}
