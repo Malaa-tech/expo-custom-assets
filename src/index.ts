@@ -153,5 +153,5 @@ const withCustomAssets: ConfigPlugin<{ assetsPath: string }> = (
 export default createRunOncePlugin(
   withCustomAssets,
   "expo-custom-assets",
-  "1.0.0"
+  "1.1.0"
 );
