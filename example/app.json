@@ -1,0 +1,49 @@
+{
+  "expo": {
+    "name": "expo-custom-assets-example",
+    "slug": "expo-custom-assets-example",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "assetBundlePatterns": ["**/*"],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.mzaien.expocustomassetsexample",
+      "buildNumber": "1"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#ffffff"
+      },
+      "package": "com.mzaien.expocustomassetsexample"
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+
+    "plugins": [
+      [
+        "expo-build-properties",
+        {
+          "ios": {
+            "flipper": true,
+            "deploymentTarget": "14.0"
+          }
+        }
+      ],
+      [
+        "expo-custom-assets",
+        {
+          "assetsPath": "./assets/animations"
+        }
+      ]
+    ]
+  }
+}
