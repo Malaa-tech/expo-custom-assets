@@ -3,9 +3,8 @@
 Expo plugin to add custom assets to xcode and android studio to allow the usage of it as local files for projects like [Rive](https://help.rive.app/runtimes/overview/react-native/adding-rive-to-expo)
 
 # Demo 
-![Demo Video](demo.mov)
 
-
+![Demo Video](https://github.com/Malaa-tech/expo-custom-assets/assets/43112535/d0422f6b-1421-4e47-9d9f-b51fdaac1de1)
 
 
 
