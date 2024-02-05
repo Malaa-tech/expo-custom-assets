@@ -4,9 +4,7 @@ Expo plugin to add custom assets to xcode and android studio to allow the usage 
 
 # Demo 
 
-![Demo Video](https://github.com/Malaa-tech/expo-custom-assets/assets/43112535/d0422f6b-1421-4e47-9d9f-b51fdaac1de1)
-
-
+https://github.com/Malaa-tech/expo-custom-assets/assets/43112535/2a6de948-d3e9-4362-925f-3a3c786016b1
 
 # API documentation
 
