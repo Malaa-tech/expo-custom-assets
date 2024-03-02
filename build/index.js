@@ -122,4 +122,4 @@ const withCustomAssets = (config, props) => {
     config = withCustomAssetsAndroid(config, props);
     return config;
 };
-exports.default = (0, config_plugins_1.createRunOncePlugin)(withCustomAssets, "expo-custom-assets", "1.2.0");
+exports.default = (0, config_plugins_1.createRunOncePlugin)(withCustomAssets, "expo-custom-assets", "1.2.1");
