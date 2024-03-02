@@ -3166,10 +3166,10 @@ expo-constants@~15.4.0:
   dependencies:
     "@expo/config" "~8.5.0"
 
-expo-custom-assets@1.1.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/expo-custom-assets/-/expo-custom-assets-1.1.0.tgz#7186c9a22d88693c57511fa87fa1fe9c56b948d2"
-  integrity sha512-9Li5Rz8fvfu97ho47DSnl3NwTn5Mb3vy0GLMkgtZj/NyLDHZzpsvEHPgB3MhVhsrC36ODM0OK2DJS4gvORlxZQ==
+expo-custom-assets@1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/expo-custom-assets/-/expo-custom-assets-1.2.0.tgz#5e95827fe6a42aae5402ce9b5f71d49d69528f7f"
+  integrity sha512-AlLCizQBbWKhmU9sLGge6ZjCkgrHZAGxMzTtBx91MhG1W8sPMxpqK08aJALzlhNikk5Msww7mhlfZBpkAJuWEw==
 
 expo-file-system@~16.0.0, expo-file-system@~16.0.5:
   version "16.0.5"

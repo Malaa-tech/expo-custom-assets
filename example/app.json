@@ -42,6 +42,8 @@
         "expo-custom-assets",
         {
           "assetsPath": "./assets/animations"
+          // if you want to add custom Assets folder name
+          // "assetsDirName": "testName"
         }
       ]
     ]
