@@ -26,7 +26,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const config_plugins_1 = require("@expo/config-plugins");
 const fs_extra_1 = require("fs-extra");
 const path = __importStar(require("path"));
-const metaData = (0, fs_extra_1.readJsonSync)('./package.json');
 function withCustomAssetsAndroid(config, props) {
     // Specify the source directory of your assets
     const assetSourceDir = props.assetsPath;
@@ -123,4 +122,13 @@ const withCustomAssets = (config, props) => {
     config = withCustomAssetsAndroid(config, props);
     return config;
 };
-exports.default = (0, config_plugins_1.createRunOncePlugin)(withCustomAssets, metaData.name, metaData.version);
+let pkg = {
+    name: "expo-custom-assets",
+};
+try {
+    pkg = require("expo-custom-assets/package.json");
+}
+catch {
+    // empty catch block
+}
+exports.default = (0, config_plugins_1.createRunOncePlugin)(withCustomAssets, pkg.name, pkg.version);
