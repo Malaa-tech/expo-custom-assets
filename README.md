@@ -30,6 +30,8 @@ For [managed](https://docs.expo.dev/archive/managed-vs-bare/) Expo projects
         "expo-custom-assets",
         {
           "assetsPath": "./path-to-your-assets-folder"
+          // if you want custom assets director name use this prop
+          // "assetsDirName": "testName"
         }
       ]
     ]
@@ -47,9 +49,9 @@ Contributions are very welcome! we have some things to do in our [Todo's](#Todo'
 
 # Todo's
 
-- [ ] Stop creating Assets folder in it exist 
-- [ ] Allow for custom asset folder name 
-- [ ] Fix typescript error when building the package
+- [x] Stop creating Assets folder in it exist 
+- [x] Allow for custom asset folder name 
+- [x] Fix typescript error when building the package
 - [ ] Add more example for other custom assets other than Rive
 
 
