@@ -13,8 +13,10 @@ import {
   existsSync,
   readFile,
   writeFile,
+  readJsonSync
 } from "fs-extra";
 import * as path from "path";
+const metaData = readJsonSync('./package.json');
 function withCustomAssetsAndroid(
   config: ExpoConfig,
   props: { assetsPath: string }
@@ -152,6 +154,6 @@ const withCustomAssets: ConfigPlugin<{ assetsPath: string }> = (
 
 export default createRunOncePlugin(
   withCustomAssets,
-  "expo-custom-assets",
-  "1.2.1",
+  metaData.name,
+  metaData.version,
 );
