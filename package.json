@@ -1,6 +1,6 @@
 {
   "name": "expo-custom-assets",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Expo plugin to add custom assets to native codebase",
   "main": "build/index.js",
   "types": "build/index.d.ts",
@@ -18,8 +18,7 @@
     "build": "expo-module build",
     "clean": "expo-module clean",
     "lint": "expo-module lint",
-    "test": "expo-module test",
-    "expo-module": "expo-module"
+    "test": "expo-module test"
   },
   "keywords": [
     "react",
@@ -31,7 +30,8 @@
     "expo": "^49"
   },
   "devDependencies": {
-    "expo-module-scripts": "^3.4.0",
+    "@types/fs-extra": "^11.0.4",
+    "expo-module-scripts": "^3.4.1",
     "fs-extra": "^11.2.0"
   }
 }

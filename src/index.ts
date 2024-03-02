@@ -1,4 +1,12 @@
 import {
+  ConfigPlugin,
+  withDangerousMod,
+  withXcodeProject,
+  IOSConfig,
+  createRunOncePlugin,
+} from "@expo/config-plugins";
+import { ExpoConfig } from "@expo/config-types";
+import {
   ensureDirSync,
   readdir,
   copyFileSync,
@@ -7,14 +15,6 @@ import {
   writeFile,
 } from "fs-extra";
 import * as path from "path";
-import {
-  ConfigPlugin,
-  withDangerousMod,
-  withXcodeProject,
-  IOSConfig,
-  createRunOncePlugin,
-} from "@expo/config-plugins";
-import { ExpoConfig } from "@expo/config-types";
 function withCustomAssetsAndroid(
   config: ExpoConfig,
   props: { assetsPath: string }
@@ -100,9 +100,9 @@ function withCustomAssetsAndroid(
 }
 function withCustomAssetsIos(
   config: ExpoConfig,
-  props: { assetsPath: string }
+  props: { assetsPath: string; assetsDirName?: string }
 ) {
-  const { assetsPath } = props;
+  const { assetsPath, assetsDirName } = props;
 
   return withXcodeProject(config, async (config) => {
     // Get the path to the iOS project directory
@@ -110,8 +110,8 @@ function withCustomAssetsIos(
     // Get the path to the iOS resources directory
     const iosDir = path.join(projectRoot, "ios");
     // Create the 'assets' directory if it doesn't exist
-    const assetsDir = path.join(iosDir, "Assets");
-    ensureDirSync(assetsDir);
+    const assetsDir = path.join(iosDir, assetsDirName ?? "Assets");
+    if (existsSync(assetsDir) === false) ensureDirSync(assetsDir);
     // Get the path to the assets directory
     const assetSourceDir = assetsPath;
     const assetSourcePath = path.join(projectRoot, assetSourceDir);
@@ -153,5 +153,5 @@ const withCustomAssets: ConfigPlugin<{ assetsPath: string }> = (
 export default createRunOncePlugin(
   withCustomAssets,
   "expo-custom-assets",
-  "1.1.0"
+  "1.2.0"
 );
