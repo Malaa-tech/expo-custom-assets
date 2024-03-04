@@ -1,5 +1,5 @@
 import { ConfigPlugin } from "@expo/config-plugins";
 declare const _default: ConfigPlugin<{
-    assetsPath: string;
+    assetsPaths: string[];
 }>;
 export default _default;
