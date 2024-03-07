@@ -43,8 +43,6 @@ function withCustomAssetsAndroid(config, props) {
                     (0, fs_extra_1.copyFileSync)(srcAssetPath, destAssetPath);
                 }
             }
-            // XML 파일 업데이트 로직은 여기에 포함됩니다. 필요에 따라 조정하십시오.
-            // 각 assetsPaths에 대해 처리한 후 resources.xml 업데이트
             return config;
         },
     ]);
@@ -83,13 +81,11 @@ const withCustomAssets = (config, props) => {
 };
 let pkg = {
     name: "expo-custom-assets",
-    // package.json에서 버전을 가져오거나 기본값을 사용
 };
-// package.json에서 패키지 정보를 가져오려 시도
 try {
     pkg = require("expo-custom-assets/package.json");
 }
 catch {
-    // 패키지 정보를 가져오는데 실패할 경우 처리
+    console.error("Failed to load package.json for expo-custom-assets");
 }
 exports.default = (0, config_plugins_1.createRunOncePlugin)(withCustomAssets, pkg.name, pkg.version);
