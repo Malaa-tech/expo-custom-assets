@@ -41,7 +41,8 @@
       [
         "expo-custom-assets",
         {
-          "assetsPath": "./assets/animations"
+          // Add asset directory paths, the plugin copies the files in the given paths to the app bundle folder named Assets
+          "assetsPaths": ["./assets/animations"]
           // if you want to add custom Assets folder name
           // "assetsDirName": "testName"
         }
