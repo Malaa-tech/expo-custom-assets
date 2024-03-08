@@ -18,7 +18,8 @@
     "build": "expo-module build",
     "clean": "expo-module clean",
     "lint": "expo-module lint",
-    "test": "expo-module test"
+    "test": "expo-module test",
+    "release": "yarn changeset version && yarn changeset publish"
   },
   "keywords": [
     "react",
