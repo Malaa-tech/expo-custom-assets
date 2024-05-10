@@ -28,7 +28,7 @@
     "prebuild"
   ],
   "peerDependencies": {
-    "expo": "^49"
+    "expo": ">=49"
   },
   "devDependencies": {
     "@types/fs-extra": "^11.0.4",
