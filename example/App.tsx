@@ -8,17 +8,15 @@ export default function App() {
 
   return (
     <View style={styles.container}>
-      <Text>Rive truk example</Text>
       <StatusBar style="auto" />
+      <Text style={{ fontSize: 32, marginTop: 100, color: 'skyblue', fontStyle: 'italic' }}>Rive truk example</Text>
       <Rive
         resourceName="truck_v7"
         animationName={animation}
         autoplay
         style={{
-          width: 200,
-          height: 20,
-          flex: 0,
-          borderRadius: 100,
+          width: 250,
+          flex: 1,
         }}
       />
       <View
