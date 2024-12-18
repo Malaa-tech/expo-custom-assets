@@ -31,7 +31,7 @@ function withCustomAssetsAndroid(
 
 			for (const assetSourceDir of assetsPaths) {
 				const assetSourcePath = path.join(projectRoot, assetSourceDir);
-				const assetFiles = (await readdir(assetSourcePath)).filter(file => !file.match(new RegExp(ignoredPattern??'')));
+				const assetFiles = (await readdir(assetSourcePath)).filter(file => ignoredPattern === undefined ? true : !file.match(new RegExp(ignoredPattern)));
 
 				for (const assetFile of assetFiles) {
 					const srcAssetPath = path.join(assetSourcePath, assetFile);
@@ -59,7 +59,7 @@ function withCustomAssetsIos(
 		for (const assetSourceDir of assetsPaths) {
 			const assetSourcePath = path.join(projectRoot, assetSourceDir);
 			// const assetFiles = await readdir(assetSourcePath);
-			const assetFiles = (await readdir(assetSourcePath)).filter(file => !file.match(new RegExp(ignoredPattern??'')));
+			const assetFiles = (await readdir(assetSourcePath)).filter(file => ignoredPattern === undefined ? true : !file.match(new RegExp(ignoredPattern)));
 
 			const project = config.modResults;
 			const groupName = "Assets";
