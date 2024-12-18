@@ -34,7 +34,7 @@
         {
           "ios": {
             "flipper": true,
-            "deploymentTarget": "14.0"
+            "deploymentTarget": "15.1"
           }
         }
       ],
@@ -42,7 +42,8 @@
         "expo-custom-assets",
         {
           // Add asset directory paths, the plugin copies the files in the given paths to the app bundle folder named Assets
-          "assetsPaths": ["./assets/animations"]
+          "assetsPaths": ["./assets/animations"],
+          "ignoredPattern": "\\.png$"
           // if you want to add custom Assets folder name
           // "assetsDirName": "testName"
         }
