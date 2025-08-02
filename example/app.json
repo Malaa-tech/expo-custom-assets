@@ -11,7 +11,9 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.mzaien.expocustomassetsexample",
@@ -27,7 +29,6 @@
     "web": {
       "favicon": "./assets/favicon.png"
     },
-
     "plugins": [
       [
         "expo-build-properties",
@@ -41,13 +42,13 @@
       [
         "expo-custom-assets",
         {
-          // Add asset directory paths, the plugin copies the files in the given paths to the app bundle folder named Assets
-          "assetsPaths": ["./assets/animations"],
+          "assetsPaths": [
+            "./assets/animations"
+          ],
           "ignoredPattern": "\\.png$"
-          // if you want to add custom Assets folder name
-          // "assetsDirName": "testName"
         }
-      ]
+      ],
+      "expo-asset"
     ]
   }
 }

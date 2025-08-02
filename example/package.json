@@ -11,17 +11,18 @@
     "prebuild:clean": "expo prebuild --clean"
   },
   "dependencies": {
-    "expo": "~51.0.31",
-    "expo-asset": "~10.0.10",
+    "expo": "^53.0.20",
+    "expo-asset": "~11.1.7",
     "expo-custom-assets": "*",
-    "expo-status-bar": "~1.12.1",
-    "react": "18.2.0",
-    "react-native": "0.74.5",
-    "rive-react-native": "^7.3.0"
+    "expo-status-bar": "~2.2.3",
+    "react": "19.0.0",
+    "react-native": "0.79.5",
+    "rive-react-native": "^9.0.4"
   },
   "devDependencies": {
-    "@babel/core": "^7.25.2",
-    "expo-build-properties": "~0.12.5"
+    "@babel/core": "^7.26.0",
+    "@types/react": "~19.0.10",
+    "expo-build-properties": "~0.14.8"
   },
   "private": true
 }
