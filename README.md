@@ -34,6 +34,8 @@ For [managed](https://docs.expo.dev/archive/managed-vs-bare/) Expo projects
           "assetsPaths": ["./path-to-your-asset-folder"]
           // if you want custom assets directory name use this prop (default: "Assets")
           // "assetsDirName": "testName"
+          // if you want to preserve the folder structure use this prop (default: false)
+          // "preserveFolder": true
         }
       ]
     ]
