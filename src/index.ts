@@ -1,19 +1,19 @@
+import * as path from "node:path";
 import {
 	type ConfigPlugin,
-	IOSConfig,
 	createRunOncePlugin,
+	IOSConfig,
 	withDangerousMod,
 	withXcodeProject,
 } from "@expo/config-plugins";
 import type { ExpoConfig } from "@expo/config-types";
 import { copyFileSync, ensureDirSync, readdir } from "fs-extra";
-import * as path from "node:path";
 
 function withCustomAssetsAndroid(
 	config: ExpoConfig,
-	props: { assetsPaths: string[], ignoredPattern?:string },
+	props: { assetsPaths: string[]; ignoredPattern?: string },
 ) {
-  const {assetsPaths,ignoredPattern} = props
+	const { assetsPaths, ignoredPattern } = props;
 	return withDangerousMod(config, [
 		"android",
 		async (config) => {
@@ -31,7 +31,11 @@ function withCustomAssetsAndroid(
 
 			for (const assetSourceDir of assetsPaths) {
 				const assetSourcePath = path.join(projectRoot, assetSourceDir);
-				const assetFiles = (await readdir(assetSourcePath)).filter(file => ignoredPattern === undefined ? true : !file.match(new RegExp(ignoredPattern)));
+				const assetFiles = (await readdir(assetSourcePath)).filter((file) =>
+					ignoredPattern === undefined
+						? true
+						: !file.match(new RegExp(ignoredPattern)),
+				);
 
 				for (const assetFile of assetFiles) {
 					const srcAssetPath = path.join(assetSourcePath, assetFile);
@@ -47,9 +51,13 @@ function withCustomAssetsAndroid(
 
 function withCustomAssetsIos(
 	config: ExpoConfig,
-	props: { assetsPaths: string[]; assetsDirName?: string, ignoredPattern?:string },
+	props: {
+		assetsPaths: string[];
+		assetsDirName?: string;
+		ignoredPattern?: string;
+	},
 ) {
-  const {assetsPaths, assetsDirName, ignoredPattern} = props
+	const { assetsPaths, assetsDirName, ignoredPattern } = props;
 	return withXcodeProject(config, async (config) => {
 		const { projectRoot } = config.modRequest;
 		const iosDir = path.join(projectRoot, "ios");
@@ -59,7 +67,11 @@ function withCustomAssetsIos(
 		for (const assetSourceDir of assetsPaths) {
 			const assetSourcePath = path.join(projectRoot, assetSourceDir);
 			// const assetFiles = await readdir(assetSourcePath);
-			const assetFiles = (await readdir(assetSourcePath)).filter(file => ignoredPattern === undefined ? true : !file.match(new RegExp(ignoredPattern)));
+			const assetFiles = (await readdir(assetSourcePath)).filter((file) =>
+				ignoredPattern === undefined
+					? true
+					: !file.match(new RegExp(ignoredPattern)),
+			);
 
 			const project = config.modResults;
 			const groupName = "Assets";
@@ -82,13 +94,14 @@ function withCustomAssetsIos(
 	});
 }
 
-const withCustomAssets: ConfigPlugin<{ assetsPaths: string[], assetsDirName?: string, ignoredPattern?:string }> = (
-	config,
-	props,
-) => {
-  // biome-ignore lint/style/noParameterAssign: this is the way :p
+const withCustomAssets: ConfigPlugin<{
+	assetsPaths: string[];
+	assetsDirName?: string;
+	ignoredPattern?: string;
+}> = (config, props) => {
+	// biome-ignore lint/style/noParameterAssign: this is the way :p
 	config = withCustomAssetsIos(config, props);
-  // biome-ignore lint/style/noParameterAssign: this is the way :p
+	// biome-ignore lint/style/noParameterAssign: this is the way :p
 	config = withCustomAssetsAndroid(config, props);
 	return config;
 };
