@@ -36,26 +36,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const path = __importStar(require("node:path"));
 const config_plugins_1 = require("@expo/config-plugins");
 const fs_extra_1 = require("fs-extra");
-async function processDirectory(sourcePath, destPath, ignoredPattern) {
-    const files = await (0, fs_extra_1.readdir)(sourcePath, { withFileTypes: true });
-    for (const file of files) {
-        if (ignoredPattern && file.name.match(new RegExp(ignoredPattern))) {
-            continue;
-        }
-        const srcPath = path.join(sourcePath, file.name);
-        const destFilePath = path.join(destPath, file.name);
-        if (file.isDirectory()) {
-            (0, fs_extra_1.ensureDirSync)(destFilePath);
-            await processDirectory(srcPath, destFilePath, ignoredPattern);
-        }
-        else {
-            (0, fs_extra_1.ensureDirSync)(destPath);
-            (0, fs_extra_1.copyFileSync)(srcPath, destFilePath);
-        }
-    }
-}
 function withCustomAssetsAndroid(config, props) {
-    const { assetsPaths, ignoredPattern, preserveFolder } = props;
+    const { assetsPaths, ignoredPattern } = props;
     return (0, config_plugins_1.withDangerousMod)(config, [
         "android",
         async (config) => {
@@ -64,17 +46,12 @@ function withCustomAssetsAndroid(config, props) {
             (0, fs_extra_1.ensureDirSync)(rawDir);
             for (const assetSourceDir of assetsPaths) {
                 const assetSourcePath = path.join(projectRoot, assetSourceDir);
-                if (preserveFolder) {
-                    await processDirectory(assetSourcePath, rawDir, ignoredPattern);
-                }
-                else {
-                    const files = await (0, fs_extra_1.readdir)(assetSourcePath, { withFileTypes: true });
-                    for (const file of files) {
-                        if (file.isFile() && (!ignoredPattern || !file.name.match(new RegExp(ignoredPattern)))) {
-                            const srcPath = path.join(assetSourcePath, file.name);
-                            const destPath = path.join(rawDir, file.name);
-                            (0, fs_extra_1.copyFileSync)(srcPath, destPath);
-                        }
+                const files = await (0, fs_extra_1.readdir)(assetSourcePath, { withFileTypes: true });
+                for (const file of files) {
+                    if (file.isFile() && (!ignoredPattern || !file.name.match(new RegExp(ignoredPattern)))) {
+                        const srcPath = path.join(assetSourcePath, file.name);
+                        const destPath = path.join(rawDir, file.name);
+                        (0, fs_extra_1.copyFileSync)(srcPath, destPath);
                     }
                 }
             }
@@ -108,7 +85,7 @@ async function processIosDirectory(sourcePath, destPath, project, groupName, ign
     }
 }
 function withCustomAssetsIos(config, props) {
-    const { assetsPaths, assetsDirName, ignoredPattern, preserveFolder } = props;
+    const { assetsPaths, assetsDirName, ignoredPattern } = props;
     return (0, config_plugins_1.withXcodeProject)(config, async (config) => {
         const { projectRoot } = config.modRequest;
         const iosDir = path.join(projectRoot, "ios");
@@ -118,24 +95,19 @@ function withCustomAssetsIos(config, props) {
         const groupName = "Assets";
         for (const assetSourceDir of assetsPaths) {
             const assetSourcePath = path.join(projectRoot, assetSourceDir);
-            if (preserveFolder) {
-                await processIosDirectory(assetSourcePath, assetsDir, project, groupName, ignoredPattern);
-            }
-            else {
-                const files = await (0, fs_extra_1.readdir)(assetSourcePath, { withFileTypes: true });
-                for (const file of files) {
-                    if (file.isFile() && (!ignoredPattern || !file.name.match(new RegExp(ignoredPattern)))) {
-                        const srcPath = path.join(assetSourcePath, file.name);
-                        const destPath = path.join(assetsDir, file.name);
-                        (0, fs_extra_1.copyFileSync)(srcPath, destPath);
-                        config_plugins_1.IOSConfig.XcodeUtils.addResourceFileToGroup({
-                            filepath: destPath,
-                            groupName,
-                            project,
-                            isBuildFile: true,
-                            verbose: true,
-                        });
-                    }
+            const files = await (0, fs_extra_1.readdir)(assetSourcePath, { withFileTypes: true });
+            for (const file of files) {
+                if (file.isFile() && (!ignoredPattern || !file.name.match(new RegExp(ignoredPattern)))) {
+                    const srcPath = path.join(assetSourcePath, file.name);
+                    const destPath = path.join(assetsDir, file.name);
+                    (0, fs_extra_1.copyFileSync)(srcPath, destPath);
+                    config_plugins_1.IOSConfig.XcodeUtils.addResourceFileToGroup({
+                        filepath: destPath,
+                        groupName,
+                        project,
+                        isBuildFile: true,
+                        verbose: true,
+                    });
                 }
             }
         }

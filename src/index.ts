@@ -10,36 +10,12 @@ import {
 import type { ExpoConfig } from "@expo/config-types";
 import { copyFileSync, ensureDirSync, readdir } from "fs-extra";
 
-async function processDirectory(
-	sourcePath: string,
-	destPath: string,
-	ignoredPattern?: string,
-) {
-	const files = await readdir(sourcePath, { withFileTypes: true });
-
-	for (const file of files) {
-		if (ignoredPattern && file.name.match(new RegExp(ignoredPattern))) {
-			continue;
-		}
-
-		const srcPath = path.join(sourcePath, file.name);
-		const destFilePath = path.join(destPath, file.name);
-
-		if (file.isDirectory()) {
-			ensureDirSync(destFilePath);
-			await processDirectory(srcPath, destFilePath, ignoredPattern);
-		} else {
-			ensureDirSync(destPath);
-			copyFileSync(srcPath, destFilePath);
-		}
-	}
-}
 
 function withCustomAssetsAndroid(
 	config: ExpoConfig,
-	props: { assetsPaths: string[]; ignoredPattern?: string; preserveFolder?: boolean },
+	props: { assetsPaths: string[]; ignoredPattern?: string;  },
 ) {
-	const { assetsPaths, ignoredPattern, preserveFolder } = props;
+	const { assetsPaths, ignoredPattern } = props;
 	return withDangerousMod(config, [
 		"android",
 		async (config) => {
@@ -59,10 +35,7 @@ function withCustomAssetsAndroid(
 			for (const assetSourceDir of assetsPaths) {
 				const assetSourcePath = path.join(projectRoot, assetSourceDir);
 				
-				if (preserveFolder) {
-					await processDirectory(assetSourcePath, rawDir, ignoredPattern);
-				} else {
-					const files = await readdir(assetSourcePath, { withFileTypes: true });
+				const files = await readdir(assetSourcePath, { withFileTypes: true });
 					for (const file of files) {
 						if (file.isFile() && (!ignoredPattern || !file.name.match(new RegExp(ignoredPattern)))) {
 							const srcPath = path.join(assetSourcePath, file.name);
@@ -70,7 +43,6 @@ function withCustomAssetsAndroid(
 							copyFileSync(srcPath, destPath);
 						}
 					}
-				}
 			}
 
 			return config;
@@ -118,10 +90,9 @@ function withCustomAssetsIos(
 		assetsPaths: string[];
 		assetsDirName?: string;
 		ignoredPattern?: string;
-		preserveFolder?: boolean;
 	},
 ) {
-	const { assetsPaths, assetsDirName, ignoredPattern, preserveFolder } = props;
+	const { assetsPaths, assetsDirName, ignoredPattern } = props;
 	return withXcodeProject(config, async (config) => {
 		const { projectRoot } = config.modRequest;
 		const iosDir = path.join(projectRoot, "ios");
@@ -134,10 +105,7 @@ function withCustomAssetsIos(
 		for (const assetSourceDir of assetsPaths) {
 			const assetSourcePath = path.join(projectRoot, assetSourceDir);
 
-			if (preserveFolder) {
-				await processIosDirectory(assetSourcePath, assetsDir, project, groupName, ignoredPattern);
-			} else {
-				const files = await readdir(assetSourcePath, { withFileTypes: true });
+		const files = await readdir(assetSourcePath, { withFileTypes: true });
 				for (const file of files) {
 					if (file.isFile() && (!ignoredPattern || !file.name.match(new RegExp(ignoredPattern)))) {
 						const srcPath = path.join(assetSourcePath, file.name);
@@ -152,7 +120,6 @@ function withCustomAssetsIos(
 						});
 					}
 				}
-			}
 		}
 
 		return config;
@@ -163,7 +130,6 @@ const withCustomAssets: ConfigPlugin<{
 	assetsPaths: string[];
 	assetsDirName?: string;
 	ignoredPattern?: string;
-  preserveFolder?: boolean;
 }> = (config, props) => {
 	config = withCustomAssetsIos(config, props);
 	config = withCustomAssetsAndroid(config, props);
