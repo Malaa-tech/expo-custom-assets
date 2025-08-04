@@ -50,39 +50,6 @@ function withCustomAssetsAndroid(
 	]);
 }
 
-async function processIosDirectory(
-	sourcePath: string,
-	destPath: string,
-	project: XcodeProject,
-	groupName: string,
-	ignoredPattern?: string,
-) {
-	const files = await readdir(sourcePath, { withFileTypes: true });
-
-	for (const file of files) {
-		if (ignoredPattern && file.name.match(new RegExp(ignoredPattern))) {
-			continue;
-		}
-
-		const srcPath = path.join(sourcePath, file.name);
-		const destFilePath = path.join(destPath, file.name);
-
-		if (file.isDirectory()) {
-			ensureDirSync(destFilePath);
-			await processIosDirectory(srcPath, destFilePath, project, groupName, ignoredPattern);
-		} else {
-			ensureDirSync(destPath);
-			copyFileSync(srcPath, destFilePath);
-			IOSConfig.XcodeUtils.addResourceFileToGroup({
-				filepath: destFilePath,
-				groupName,
-				project,
-				isBuildFile: true,
-				verbose: true,
-			});
-		}
-	}
-}
 
 function withCustomAssetsIos(
 	config: ExpoConfig,

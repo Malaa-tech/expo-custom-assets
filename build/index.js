@@ -59,31 +59,6 @@ function withCustomAssetsAndroid(config, props) {
         },
     ]);
 }
-async function processIosDirectory(sourcePath, destPath, project, groupName, ignoredPattern) {
-    const files = await (0, fs_extra_1.readdir)(sourcePath, { withFileTypes: true });
-    for (const file of files) {
-        if (ignoredPattern && file.name.match(new RegExp(ignoredPattern))) {
-            continue;
-        }
-        const srcPath = path.join(sourcePath, file.name);
-        const destFilePath = path.join(destPath, file.name);
-        if (file.isDirectory()) {
-            (0, fs_extra_1.ensureDirSync)(destFilePath);
-            await processIosDirectory(srcPath, destFilePath, project, groupName, ignoredPattern);
-        }
-        else {
-            (0, fs_extra_1.ensureDirSync)(destPath);
-            (0, fs_extra_1.copyFileSync)(srcPath, destFilePath);
-            config_plugins_1.IOSConfig.XcodeUtils.addResourceFileToGroup({
-                filepath: destFilePath,
-                groupName,
-                project,
-                isBuildFile: true,
-                verbose: true,
-            });
-        }
-    }
-}
 function withCustomAssetsIos(config, props) {
     const { assetsPaths, assetsDirName, ignoredPattern } = props;
     return (0, config_plugins_1.withXcodeProject)(config, async (config) => {
