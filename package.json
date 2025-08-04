@@ -1,6 +1,6 @@
 {
   "name": "expo-custom-assets",
-  "version": "1.4.3",
+  "version": "1.4.4",
   "description": "Expo plugin to add custom assets to native codebase",
   "main": "build/index.js",
   "types": "build/index.d.ts",
@@ -20,7 +20,6 @@
     "clean": "expo-module clean",
     "lint": "expo-module lint",
     "test": "expo-module test",
-    "release-notes": "changeset && changeset publish",
     "release": "changeset && changeset publish"
   },
   "keywords": [
