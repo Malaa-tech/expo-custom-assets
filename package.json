@@ -20,7 +20,8 @@
     "clean": "expo-module clean",
     "lint": "expo-module lint",
     "test": "expo-module test",
-    "release": "changeset && changeset publish"
+    "changeset": "changeset && changeset version",
+    "release": "changeset publish"
   },
   "keywords": [
     "react",
