@@ -13,7 +13,7 @@
   "dependencies": {
     "expo": "^53.0.20",
     "expo-asset": "~11.1.7",
-    "expo-custom-assets": "*",
+    "expo-custom-assets": "file:..",
     "expo-status-bar": "~2.2.3",
     "react": "19.0.0",
     "react-native": "0.79.5",

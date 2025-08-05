@@ -45,7 +45,9 @@
           "assetsPaths": [
             "./assets/animations"
           ],
-          "ignoredPattern": "\\.png$"
+          "ignoredPattern": "\\.png$",
+          // "assetsDirName": "customAssets",
+          // "preserveFolder": true
         }
       ],
       "expo-asset"
