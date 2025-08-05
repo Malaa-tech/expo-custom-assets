@@ -37,21 +37,32 @@ const path = __importStar(require("node:path"));
 const config_plugins_1 = require("@expo/config-plugins");
 const fs_extra_1 = require("fs-extra");
 function withCustomAssetsAndroid(config, props) {
-    const { assetsPaths, ignoredPattern } = props;
+    const { assetsPaths, assetsDirName, ignoredPattern, preserveFolder } = props;
     return (0, config_plugins_1.withDangerousMod)(config, [
         "android",
         async (config) => {
             const { projectRoot } = config.modRequest;
-            const rawDir = path.join(projectRoot, "android", "app", "src", "main", "res", "raw");
-            (0, fs_extra_1.ensureDirSync)(rawDir);
-            for (const assetSourceDir of assetsPaths) {
-                const assetSourcePath = path.join(projectRoot, assetSourceDir);
-                const files = await (0, fs_extra_1.readdir)(assetSourcePath, { withFileTypes: true });
-                for (const file of files) {
-                    if (file.isFile() && (!ignoredPattern || !file.name.match(new RegExp(ignoredPattern)))) {
-                        const srcPath = path.join(assetSourcePath, file.name);
-                        const destPath = path.join(rawDir, file.name);
-                        (0, fs_extra_1.copyFileSync)(srcPath, destPath);
+            const customDirName = assetsDirName ?? "assets";
+            if (preserveFolder) {
+                const assetsDir = path.join(projectRoot, "android", "app", "src", "main", `${customDirName}`);
+                (0, fs_extra_1.ensureDirSync)(assetsDir);
+                for (const assetSourceDir of assetsPaths) {
+                    const assetSourcePath = path.join(projectRoot, assetSourceDir);
+                    await (0, fs_extra_1.copy)(assetSourcePath, path.join(assetsDir, path.basename(assetSourceDir)));
+                }
+            }
+            else {
+                const rawDir = path.join(projectRoot, "android", "app", "src", "main", "res", "raw");
+                (0, fs_extra_1.ensureDirSync)(rawDir);
+                for (const assetSourceDir of assetsPaths) {
+                    const assetSourcePath = path.join(projectRoot, assetSourceDir);
+                    const files = await (0, fs_extra_1.readdir)(assetSourcePath, { withFileTypes: true });
+                    for (const file of files) {
+                        if (file.isFile() && (!ignoredPattern || !file.name.match(new RegExp(ignoredPattern)))) {
+                            const srcPath = path.join(assetSourcePath, file.name);
+                            const destPath = path.join(rawDir, file.name);
+                            (0, fs_extra_1.copyFileSync)(srcPath, destPath);
+                        }
                     }
                 }
             }
@@ -60,38 +71,48 @@ function withCustomAssetsAndroid(config, props) {
     ]);
 }
 function withCustomAssetsIos(config, props) {
-    const { assetsPaths, assetsDirName, ignoredPattern } = props;
+    const { assetsPaths, assetsDirName, ignoredPattern, preserveFolder } = props;
     return (0, config_plugins_1.withXcodeProject)(config, async (config) => {
-        const { projectRoot } = config.modRequest;
-        const iosDir = path.join(projectRoot, "ios");
-        const assetsDir = path.join(iosDir, assetsDirName ?? "Assets");
-        (0, fs_extra_1.ensureDirSync)(assetsDir);
+        const { projectRoot, platformProjectRoot } = config.modRequest;
         const project = config.modResults;
-        const groupName = "Assets";
+        const groupName = assetsDirName ?? "Assets";
+        config_plugins_1.IOSConfig.XcodeUtils.ensureGroupRecursively(project, groupName);
+        const assetsDir = path.join(platformProjectRoot, groupName);
+        (0, fs_extra_1.ensureDirSync)(assetsDir);
         for (const assetSourceDir of assetsPaths) {
             const assetSourcePath = path.join(projectRoot, assetSourceDir);
-            const files = await (0, fs_extra_1.readdir)(assetSourcePath, { withFileTypes: true });
-            for (const file of files) {
-                if (file.isFile() && (!ignoredPattern || !file.name.match(new RegExp(ignoredPattern)))) {
-                    const srcPath = path.join(assetSourcePath, file.name);
-                    const destPath = path.join(assetsDir, file.name);
-                    (0, fs_extra_1.copyFileSync)(srcPath, destPath);
-                    config_plugins_1.IOSConfig.XcodeUtils.addResourceFileToGroup({
-                        filepath: destPath,
-                        groupName,
-                        project,
-                        isBuildFile: true,
-                        verbose: true,
-                    });
+            if (preserveFolder) {
+                const destDir = path.join(assetsDir, path.basename(assetSourceDir));
+                await (0, fs_extra_1.copy)(assetSourcePath, destDir);
+            }
+            else {
+                const files = await (0, fs_extra_1.readdir)(assetSourcePath, { withFileTypes: true });
+                for (const file of files) {
+                    if (file.isFile() && (!ignoredPattern || !file.name.match(new RegExp(ignoredPattern)))) {
+                        const srcPath = path.join(assetSourcePath, file.name);
+                        const destPath = path.join(assetsDir, file.name);
+                        (0, fs_extra_1.copyFileSync)(srcPath, destPath);
+                    }
                 }
             }
+        }
+        // Add the assets to the Xcode project
+        const files = await (0, fs_extra_1.readdir)(assetsDir, { withFileTypes: true });
+        for (const file of files) {
+            config_plugins_1.IOSConfig.XcodeUtils.addResourceFileToGroup({
+                filepath: path.join(groupName, file.name),
+                groupName,
+                project,
+                isBuildFile: true,
+                verbose: true,
+            });
         }
         return config;
     });
 }
 const withCustomAssets = (config, props) => {
-    config = withCustomAssetsIos(config, props);
     config = withCustomAssetsAndroid(config, props);
+    config = withCustomAssetsIos(config, props);
     return config;
 };
 let pkg = {
